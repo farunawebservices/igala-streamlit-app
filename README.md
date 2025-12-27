@@ -1,14 +1,15 @@
 ---
-title: Streamlit Template Space
+title: Igala Streamlit App 02
 emoji: 🚀
 colorFrom: red
 colorTo: red
 sdk: docker
 app_port: 8501
 tags:
-  - streamlit
+- streamlit
 pinned: false
-short_description: Streamlit template space
+short_description: A Streamlit app showcasing an Igala language dataset with ex
+license: mit
 ---
 
 # Welcome to Streamlit!
