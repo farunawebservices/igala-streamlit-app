@@ -4,7 +4,14 @@ from collections import Counter
 import string
 from sklearn.feature_extraction.text import CountVectorizer
 import matplotlib.pyplot as plt
-from wordcloud import WordCloud
+
+
+try:
+    from wordcloud import WordCloud
+    WORDCLOUD_AVAILABLE = True
+except ImportError:
+    WORDCLOUD_AVAILABLE = False
+
 
 # ---------------- Page config ----------------
 st.set_page_config(
@@ -115,7 +122,7 @@ word_freq_df = (
 
 st.bar_chart(word_freq_df.head(20).set_index("word"))
 
-# ---------------- Word Cloud ----------------
+# ---------------- Word Cloud (FIXED) ----------------
 st.subheader("☁️ Word Cloud")
 
 if len(words) > 0:
@@ -126,7 +133,7 @@ if len(words) > 0:
     ).generate(" ".join(words))
 
     fig, ax = plt.subplots()
-    ax.imshow(wordcloud, interpolation="bilinear")
+    ax.imshow(wordcloud.to_array(), interpolation="bilinear")
     ax.axis("off")
     st.pyplot(fig)
 else:
