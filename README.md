@@ -1,3 +1,10 @@
+title: Igala Language Dataset App
+emoji: 🌍
+colorFrom: blue
+colorTo: green
+sdk: static
+app_file: app.py
+
 # Igala Dataset Explorer
 
 A Streamlit web app for exploring an Igala text dataset.
