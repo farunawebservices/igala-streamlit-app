@@ -1,7 +1,8 @@
-streamlit
-pandas
-numpy
-scikit-learn
+numpy<1.25
 matplotlib
 wordcloud
+streamlit
+pandas
+scikit-learn
+
 
