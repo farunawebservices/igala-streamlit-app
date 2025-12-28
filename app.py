@@ -4,6 +4,7 @@ from collections import Counter
 import string
 from sklearn.feature_extraction.text import CountVectorizer
 import matplotlib.pyplot as plt
+import os
 
 
 try:
@@ -122,22 +123,31 @@ word_freq_df = (
 
 st.bar_chart(word_freq_df.head(20).set_index("word"))
 
-# ---------------- Word Cloud (FIXED) ----------------
+# ---------------- Word Cloud ----------------
 st.subheader("☁️ Word Cloud")
 
-if len(words) > 0:
-    wordcloud = WordCloud(
-        width=800,
-        height=400,
-        background_color="white"
-    ).generate(" ".join(words))
+import os
+IS_HF = "HUGGINGFACE_HUB" in os.environ
 
-    fig, ax = plt.subplots()
-    ax.imshow(wordcloud.to_array(), interpolation="bilinear")
-    ax.axis("off")
-    st.pyplot(fig)
+if IS_HF:
+    st.warning("WordCloud disabled on Hugging Face Spaces due to NumPy incompatibility.")
 else:
-    st.info("Not enough text to generate word cloud.")
+    if len(words) > 0:
+        from wordcloud import WordCloud
+        import matplotlib.pyplot as plt
+
+        wordcloud = WordCloud(
+            width=800,
+            height=400,
+            background_color="white"
+        ).generate(" ".join(words))
+
+        fig, ax = plt.subplots()
+        ax.imshow(wordcloud.to_image())  # ✅ ONLY to_image()
+        ax.axis("off")
+        st.pyplot(fig)
+    else:
+        st.info("Not enough text to generate word cloud.")
 
 # ---------------- Bigrams ----------------
 st.subheader("Top Bigrams")
