@@ -6,6 +6,22 @@ from sklearn.feature_extraction.text import CountVectorizer
 import matplotlib.pyplot as plt
 import os
 
+def compute_token_stats(sentences):
+    token_counts = sentences.str.split().apply(len)
+    char_counts = sentences.str.len()
+
+    avg_chars_per_token = (
+        char_counts / token_counts.replace(0, 1)
+    ).mean()
+
+    return {
+        "avg_tokens": round(token_counts.mean(), 2),
+        "min_tokens": int(token_counts.min()),
+        "max_tokens": int(token_counts.max()),
+        "avg_chars_per_sentence": round(char_counts.mean(), 2),
+        "avg_chars_per_token": round(avg_chars_per_token, 2),
+        "token_counts": token_counts
+    }
 
 try:
     from wordcloud import WordCloud
@@ -105,6 +121,25 @@ col1.metric("Total Sentences", len(filtered_df))
 col2.metric("Average Length", round(filtered_df["length"].mean(), 2))
 col3.metric("Shortest", filtered_df["length"].min())
 col4.metric("Longest", filtered_df["length"].max())
+
+# ---------------- Token & Character Statistics ----------------
+st.subheader("🧠 Token & Character Statistics")
+
+stats = compute_token_stats(filtered_df[text_column])
+
+col1, col2, col3, col4 = st.columns(4)
+
+col1.metric("Avg Tokens / Sentence", stats["avg_tokens"])
+col2.metric("Min Tokens", stats["min_tokens"])
+col3.metric("Max Tokens", stats["max_tokens"])
+col4.metric("Avg Chars / Token", stats["avg_chars_per_token"])
+
+st.caption(
+    f"Average characters per sentence: {stats['avg_chars_per_sentence']}"
+)
+
+st.subheader("📈 Token Length Distribution")
+st.bar_chart(stats["token_counts"])
 
 # ---------------- Word Frequency ----------------
 st.subheader("🔤 Top 20 Most Common Words")
